@@ -1,9 +1,9 @@
-cron job
-@reboot python3 /home/pi/VOC_monitor/VOC_log.py &
+Sensors used: adafruit SGP40 gas, adafruit SHT31D temp/humidity.
 
-set user/key for IO processing
-export ADAFRUIT_IO_KEY="XXXXXXX"
-export ADAFRUIT_IO_USERNAME="XXXXXX"
+cron job runs every minute
+* * * * * * python3 /home/pi/VOC_monitor/VOC_log.py USERNAME KEY
+
+saves log to VOC_monitor.txt, dumps to IOT services then terminates.  
 
 
 VOC index levels and how to handle the levels.
