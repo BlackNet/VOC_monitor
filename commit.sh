@@ -11,7 +11,7 @@ current_date=$(date +"%Y-%m-%d %T")
 echo "description of this push"
 read desc
 
-git commit -m "$desc Autocommit from ${current_date}" -m "${m1}" -m "${m2}" -m "${m3}" -m "${m4}"
+git commit -m "$desc from ${current_date}" -m "${m1}" -m "${m2}" -m "${m3}" -m "${m4}"
 
 # dump it
 git push
