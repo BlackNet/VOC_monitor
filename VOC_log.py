@@ -35,11 +35,12 @@ FONT_FILE = '/home/pi/VOC_monitor/PixelOperator.ttf'
 i2c = board.I2C()  # uses board.SCL and board.SDA
 
 ## IO adafruit setup
-# export ADAFRUIT_IO_KEY="XXXXXXX"
-# export ADAFRUIT_IO_USERNAME="XXXXXX"
 
-KEY = os.getenv("ADAFRUIT_IO_KEY")
-USERNAME = os.getenv("ADAFRUIT_IO_USERNAME")
+# VOC_log.py "USERNAME" "KEY"
+
+USERNAME = sys.argv[1]
+KEY = sys.argv[2]
+print (sys.argv[1] + " " + sys.argv[2] )
 aio = Client(USERNAME, KEY)
 
 
@@ -63,7 +64,7 @@ sht30=Sensirion_SHT30()
 font = ImageFont.truetype(FONT_FILE, 40)
 
 #set Warm-up time
-print('Please wait 5 seconds...')
+#print('Please wait 5 seconds...')
 sgp40.begin(5)
 
 
