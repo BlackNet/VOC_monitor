@@ -43,36 +43,16 @@ KEY = sys.argv[2]
 print (sys.argv[1] + " " + sys.argv[2] )
 aio = Client(USERNAME, KEY)
 
-
-##### display section
-# Define the Reset Pin
-oled_reset = digitalio.DigitalInOut(board.D4)
-
-# Display settings
-WIDTH = 128
-HEIGHT = 64  
-BORDER = 0
-
-oled = adafruit_ssd1306.SSD1306_I2C(WIDTH, HEIGHT, i2c, addr=0x3C, reset=oled_reset)
-
+# gather data from sensors
+sht30=Sensirion_SHT30()
+sht30.sht30_read()
 #set IICbus elativeHumidity(0-100%RH)  temperature(-10~50 centigrade)
 sgp40=Sensirion_SGP40(bus = 1, relative_humidity = 50, temperature_c = 25)
-
-sht30=Sensirion_SHT30()
-
-# Load font for the display
-font = ImageFont.truetype(FONT_FILE, 40)
+sgp40.set_envparams(sht30.humidity, sht30.temperature)
 
 #set Warm-up time
 #print('Please wait 5 seconds...')
 sgp40.begin(5)
-
-
-#while True:
-
-# gather data from sensors
-sht30.sht30_read()
-sgp40.set_envparams(sht30.humidity, sht30.temperature)
 
 # process it
 voc_index = int(sgp40.get_voc_index())
@@ -93,7 +73,24 @@ file.close ()
 aio.send_data(aio.feeds('enviro-humidity').key, humidity)
 aio.send_data(aio.feeds('enviro-temp').key, temp)
 aio.send_data(aio.feeds('voc-index').key, voc_index)
+aio.send_data(aio.feeds('voc-raw').key, voc_raw)
     
+
+
+##### display section
+# Define the Reset Pin
+oled_reset = digitalio.DigitalInOut(board.D4)
+
+# Display settings
+WIDTH = 128
+HEIGHT = 64  
+BORDER = 0
+
+oled = adafruit_ssd1306.SSD1306_I2C(WIDTH, HEIGHT, i2c, addr=0x3C, reset=oled_reset)
+
+# Load font for the display
+font = ImageFont.truetype(FONT_FILE, 40)
+
 # Clear display.
 oled.fill(0)
 oled.show()
@@ -130,6 +127,5 @@ draw.text(
 oled.image(image)
 oled.show()
 
-#    time.sleep(30)
  
     
