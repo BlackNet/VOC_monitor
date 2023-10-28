@@ -47,7 +47,7 @@ aio = Client(USERNAME, KEY)
 sht30=Sensirion_SHT30()
 sht30.sht30_read()
 #set IICbus elativeHumidity(0-100%RH)  temperature(-10~50 centigrade)
-sgp40=Sensirion_SGP40(bus = 1, relative_humidity = sht30.humidity, temperature_c = sht30.temperature)
+sgp40=Sensirion_SGP40(bus = 1, relative_humidity = 50, temperature_c = 25)
 sgp40.set_envparams(sht30.humidity, sht30.temperature)
 
 #set Warm-up time
