@@ -8,6 +8,18 @@
 # 
 ###########################################
 
+###########################################
+# ::Python modules needed
+#	pillow
+#	smbus
+#	gpiod
+#	Adafruit-Blinka
+#	Adafruit-SSD1306
+#	adafruit-circuitpython-bme280
+#	adafruit-io
+
+
+
 
 import sys
 import os
@@ -38,10 +50,10 @@ i2c = board.I2C()  # uses board.SCL and board.SDA
 
 # VOC_log.py "USERNAME" "KEY"
 
-USERNAME = sys.argv[1]
-KEY = sys.argv[2]
-print (sys.argv[1] + " " + sys.argv[2] )
-aio = Client(USERNAME, KEY)
+#USERNAME = sys.argv[1]
+#KEY = sys.argv[2]
+#print (sys.argv[1] + " " + sys.argv[2] )
+#aio = Client(USERNAME, KEY)
 
 # gather data from sensors
 sht30=Sensirion_SHT30()
@@ -62,18 +74,18 @@ humidity = float(sht30.humidity)
 now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 entry = now+" T:%2.2fC, H:%2.2f, I:%3.0d, R:%5.0d" % (temp, humidity, voc_index, voc_raw)
-#print (entry)
+print (entry)
     
 # write to the log file
-file = open(LOG_FILE, "a")
-file.write (entry+"\n")
-file.close ()
+#file = open(LOG_FILE, "a")
+#file.write (entry+"\n")
+#file.close ()
 
 # send it to the AIO feed
-aio.send_data(aio.feeds('enviro-humidity').key, humidity)
-aio.send_data(aio.feeds('enviro-temp').key, temp)
-aio.send_data(aio.feeds('voc-index').key, voc_index)
-aio.send_data(aio.feeds('voc-raw').key, voc_raw)
+#aio.send_data(aio.feeds('enviro-humidity').key, humidity)
+#aio.send_data(aio.feeds('enviro-temp').key, temp)
+#aio.send_data(aio.feeds('voc-index').key, voc_index)
+#aio.send_data(aio.feeds('voc-raw').key, voc_raw)
     
 
 
