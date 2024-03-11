@@ -17,6 +17,7 @@ import digitalio
 from PIL import Image, ImageDraw, ImageFont
 from Adafruit_IO import Client, Feed
 import json
+import urllib.request, json
 import datetime
 
 import adafruit_ssd1306  # the display 
@@ -63,17 +64,34 @@ now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 entry = now+" T:%2.2fC, H:%2.2f, I:%3.0d, R:%5.0d" % (temp, humidity, voc_index, voc_raw)
 #print (entry)
+
     
 # write to the log file
 file = open(LOG_FILE, "a")
 file.write (entry+"\n")
 file.close ()
 
+with urllib.request.urlopen("http://voron/server/temperature_store") as url:
+    data = json.load(url)
+    jsonData = data["result"]
+
+    Bed = data["result"]["heater_bed"]["temperatures"][1199]
+    Chamber = data["result"]["temperature_fan chamber"]["temperatures"][1199]
+    Extruder = data["result"]["extruder"]["temperatures"][1199]
+
+print (Bed)
+print (Chamber)
+print (Extruder)
+
 # send it to the AIO feed
 aio.send_data(aio.feeds('enviro-humidity').key, humidity)
 aio.send_data(aio.feeds('enviro-temp').key, temp)
 aio.send_data(aio.feeds('voc-index').key, voc_index)
 aio.send_data(aio.feeds('voc-raw').key, voc_raw)
+
+aio.send_data(aio.feeds('voron-bed').key, Bed)
+aio.send_data(aio.feeds('voron-chamber').key, Chamber)
+aio.send_data(aio.feeds('voron-extruder').key, Extruder)
     
 
 
